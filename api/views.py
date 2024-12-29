@@ -6,8 +6,36 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated ,IsAdminUser ,AllowAny
+from rest_framework.views import APIView
 
+
+
+
+
+
+
+
+
+
+##################################### both create and list view ######################################
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    
+    queryset=Product.objects.all()
+    serializer_class = ProductSerializer
+    def get_permissions(self):
+        self.permission_classes =[AllowAny]
+        if self.request.method=="POST":
+            self.permission_classes =[IsAdminUser]
+        return super().get_permissions()
+
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    #queryset = Product.objects.filter(stock__gt=0) # this will show only product which have  stock
+    #queryset = Product.objects.exclude(stock__gt=0) # this will show only product which have zero stock
+    serializer_class = ProductSerializer
+    
+    
 #@api_view(['GET'])
 #def product_list(request):
 #    products = Product.objects.all()
@@ -16,14 +44,18 @@ from rest_framework.permissions import IsAuthenticated
     # 'data' : serializer .data     ###normal django
    # })
 #    return Response(serializer.data) ### for DRF
-class ProductListAPIView(generics.ListAPIView):
-    #queryset = Product.objects.all()
-    #queryset = Product.objects.filter(stock__gt=0) # this will show only product which have  stock
-    queryset = Product.objects.exclude(stock__gt=0) # this will show only product which have zero stock
+
+
+class ProductCreateAPIView(generics.CreateAPIView):
+    model=Product
+    
     serializer_class = ProductSerializer
-
-
-
+    
+    def create(self, request, *args, **kwargs):
+        print(request.data)
+        
+        return super().create(request,*args,**kwargs)
+#######################################################################################################
 
 #@api_view(['GET'])
 #def product_detail(request,pk):
@@ -35,9 +67,9 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     
     serializer_class = ProductSerializer
+    lookup_url_kwarg = 'product_id'
     
-    
-    
+#########################################################################################################  
 """
 
 @api_view(['GET'])
@@ -57,7 +89,8 @@ class OrderListAPIView(generics.ListAPIView):
     queryset = Order.objects.prefetch_related('items__product')
     serializer_class = OrderSerializer
 
-
+ #############################################################################################################   
+    
 class UserOrderListAPIView(generics.ListAPIView):
     
     queryset = Order.objects.prefetch_related('items__product')
@@ -70,10 +103,9 @@ class UserOrderListAPIView(generics.ListAPIView):
         
         return qs.filter(user=self.request.user)
     
-    
-    
-    
-@api_view(['GET'])
+############################################################################################################ 
+"""
+ @api_view(['GET'])
 def product_info(request):
     products= Product.objects.all()
     serializer = ProductInfoSerializer({
@@ -82,3 +114,17 @@ def product_info(request):
         'max_price' : products.aggregate(max_price=Max('price'))['max_price']
     })
     return Response(serializer.data)
+ 
+ """   
+class ProductInfoView(APIView):
+    def get(self,request):
+       
+        products= Product.objects.all()
+        serializer = ProductInfoSerializer({
+            'products' : products ,
+            'count' : len(products) ,
+        'max_price' : products.aggregate(max_price=Max('price'))['max_price']
+        })
+        return Response(serializer.data)
+
+#############################################################################################################

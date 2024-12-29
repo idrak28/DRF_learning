@@ -6,9 +6,9 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta :
         model = Product
         fields= (
-            'id' ,
-            'name' ,
             'description' ,
+            'name' ,
+            'price' ,
             'stock',
             
         )
@@ -51,4 +51,5 @@ class ProductInfoSerializer(serializers.Serializer):
     products = ProductSerializer(many=True)
     count = serializers.IntegerField()
     max_price = serializers.FloatField()
+    
     
