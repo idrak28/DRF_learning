@@ -6,6 +6,7 @@ GET http://127.0.0.1:8000/products/  HTTP/1.1
 
 POST http://127.0.0.1:8000/products/  HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1NTM1OTcwLCJpYXQiOjE3MzU1MzU2NzAsImp0aSI6IjlkNzBjMTc3ZWFkZDQ4Njg4ZjMzOWMyODA2ZWI4MDg1IiwidXNlcl9pZCI6Mn0.cYX1-NYuUVls6s9rgY2HOuE1X5aYs2sbgOgXmjs0dwA
 
 {
     "description": "New product 3",
@@ -13,4 +14,33 @@ Content-Type: application/json
     "price": 153.00,
     "stock": 3
     
+}
+
+####
+
+POST http://127.0.0.1:8000/api/token/  HTTP/1.1
+Content-Type: application/json
+
+{
+    "username" : "idrak28" ,
+    "password" : "7590"
+}
+
+
+####
+
+POST http://127.0.0.1:8000/api/token/  HTTP/1.1
+Content-Type: application/json
+
+{
+    "username" : "admin" ,
+    "password" : "test"
+}
+
+###
+POST http://127.0.0.1:8000/api/token/refresh/  HTTP/1.1
+Content-Type: application/json
+
+{
+   "refresh" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNTYyMjUzMCwiaWF0IjoxNzM1NTM2MTMwLCJqdGkiOiJlNjM4YTE5ZWQ3YzU0MGFjYjk1NGQ5MTU5MDkyZjAzYyIsInVzZXJfaWQiOjF9.UNmaw1l0ZJF9dhAMluCFnW5BsMOJxTdF8V76jeKcoWI"
 }
