@@ -9,20 +9,40 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated ,IsAdminUser ,AllowAny
 from rest_framework.views import APIView
 
+from api.filters import ProductFilter ,InstockFilterBaackend
+
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 
-
-
-
-
-
+from rest_framework.pagination import PageNumberPagination , LimitOffsetPagination
 
 
 ##################################### both create and list view ######################################
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     
-    queryset=Product.objects.all()
+    queryset=Product.objects.order_by('pk')
     serializer_class = ProductSerializer
+    
+    #filterset_fields = ['name', 'price']
+    filterset_class = ProductFilter
+    filter_backends =[
+        DjangoFilterBackend, # django filter.py
+        filters.SearchFilter,   #?search=coffe
+        filters.OrderingFilter , #?ordering=price
+        InstockFilterBaackend
+        ]
+    search_fields = ['name' , 'description']
+    ordering_fileds = [ 'name' , 'price']
+    
+    #override pagination
+   # pagination_class =PageNumberPagination
+   # pagination_class.page_size =2
+   # pagination_class.page_query_param='page_num'
+  #  pagination_class.page_size_query_param='size'
+   # pagination_class.max_page_size=5
+    pagination_class =LimitOffsetPagination
+    
     def get_permissions(self):
         self.permission_classes =[AllowAny]
         if self.request.method=="POST":
