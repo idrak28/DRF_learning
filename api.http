@@ -60,3 +60,9 @@ Content-Type: application/json
 {
    "refresh" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNTYyMjUzMCwiaWF0IjoxNzM1NTM2MTMwLCJqdGkiOiJlNjM4YTE5ZWQ3YzU0MGFjYjk1NGQ5MTU5MDkyZjAzYyIsInVzZXJfaWQiOjF9.UNmaw1l0ZJF9dhAMluCFnW5BsMOJxTdF8V76jeKcoWI"
 }
+
+
+
+###
+GET http://127.0.0.1:8000/orders/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM2MDUxOTg5LCJpYXQiOjE3MzYwNTE2ODksImp0aSI6ImNhNmMyZGFiNzdhMzQ5NzQ5NjkzNTczMzcyZDI1MTAxIiwidXNlcl9pZCI6Mn0.vuAwjGz3VPOIu0zMo7xvfVcrkvDeB4ifMo4-2X43sRs
